@@ -1,4 +1,5 @@
 import Foundation
+import FoundationNetworking
 
 final class Utils {
 
@@ -9,7 +10,7 @@ final class Utils {
         .init(name: "Hải", userId: "trunghai95"),
     ]
     
-    static func fetchJSON<T: Codable>(from urlString: String, completion: @escaping (Result<T, Error>) -> Void) {
+    static func fetchJSON<T: Codable>(from urlString: String, for type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             return
         }
@@ -36,22 +37,23 @@ final class Utils {
     }
 
     static func fetchACSubmitssion(for user: String, completion: @escaping (Result<SubmitssionResponse, Error>) -> Void) {
-        fetchJSON<SubmitssionResponse>(from: "https://alfa-leetcode-api.onrender.com/\(user)/acsubmission?limit=1") {
+        fetchJSON(from: "https://alfa-leetcode-api.onrender.com/\(user)/acsubmission?limit=1", for: SubmitssionResponse.self) { 
             switch $0 {
                 case .success(let response):
                 if let submittion = response.submission.first {
-                    fetchACSubmitssion<QuestionModel>(for: "https://alfa-leetcode-api.onrender.com/select?titleSlug=\(submittion.titleSlug)") {
-                        switch $0 {
-                            case .success(let question):
-                                submittion.questionDetail = question
-                                completion(.success(response))
-                            case .failure(let error):
-                                completion(.failure(error))
+                    fetchJSON(from: "https://alfa-leetcode-api.onrender.com/select?titleSlug=\(submittion.titleSlug)", for: QuestionModel.self) {
+                            switch $0 {
+                                case .success(let question):
+                                    var submittion = submittion
+                                    submittion.questionDetail = question
+                                    completion(.success(.init(submission: [submittion])))
+                                case .failure(let error):
+                                    completion(.failure(error))
                         }
                     }
                 }
                 case .failure(let error):
-                    break
+                    completion(.failure(error))
             }
         }
     }
@@ -76,7 +78,9 @@ final class Utils {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: json, options: [])
             request.httpBody = jsonData
-        } 
+        } catch(let error) {
+            print(error)
+        }
 
         let task = URLSession.shared.dataTask(with: request) { _, _, _ in }
 

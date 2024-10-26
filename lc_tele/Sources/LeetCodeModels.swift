@@ -19,9 +19,13 @@ struct QuestionModel: Codable {
     let link, questionId: String
 }
 
-class User {
+class User: CustomDebugStringConvertible {
     let name, userId: String
     var lastQuestionId: String?
+
+    var debugDescription: String {
+        "name: \(name), userId: \(userId), lastQuestionId: \(lastQuestionId ?? "nil")"
+    }
 
     init (name: String, userId: String) {
         self.name = name
