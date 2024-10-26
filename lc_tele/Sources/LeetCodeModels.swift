@@ -22,4 +22,9 @@ struct QuestionModel: Codable {
 class User {
     let name, userId: String
     var lastQuestionId: String?
+
+    init (name: String, userId: String) {
+        self.name = name
+        self.userId = userId
+    }
 }

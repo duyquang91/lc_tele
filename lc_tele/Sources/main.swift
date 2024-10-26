@@ -13,7 +13,7 @@ timer.setEventHandler {
                     if let userQuestionId = user.lastQuestionId {
                         if userQuestionId != question.questionId {
                             user.lastQuestionId = question.questionId
-                            Utils.sendMessageToTelegram(text: "\(user.name) just solved the problem \(question.questionId).\(question.title): \(question.link)")
+                            Utils.sendMessageToTelegram(text: "\(user.name) just solved the problem \(question.questionId).\(submission.title): \(question.link)")
                         }
                     } else {
                         user.lastQuestionId = question.questionId
