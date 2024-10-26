@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:lc_tele}/lc_tele",
+            "name": "Debug lc_tele (lc_tele)",
+            "program": "${workspaceFolder:lc_tele}/lc_tele/.build/debug/lc_tele",
+            "preLaunchTask": "swift: Build Debug lc_tele (lc_tele)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:lc_tele}/lc_tele",
+            "name": "Release lc_tele (lc_tele)",
+            "program": "${workspaceFolder:lc_tele}/lc_tele/.build/release/lc_tele",
+            "preLaunchTask": "swift: Build Release lc_tele (lc_tele)"
+        }
+    ]
+}
